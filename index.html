@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Fare matrix & Manage booking – UI showcase</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com/3.4.17"></script>
+<script>
+tailwind.config={theme:{extend:{colors:{via:{y:'#FFC20E',yd:'#e6ab00',g:'#3a3a39',d:'#252525',b:'#0b6fa4',bd:'#08577f',l:'#f4f4f2',ln:'#dcdcd8',m:'#6b6b68'}},fontFamily:{sans:['"Source Sans 3"','Helvetica Neue','Arial','sans-serif']},keyframes:{up:{from:{opacity:0,transform:'translateY(6px)'},to:{opacity:1,transform:'none'}},pop:{'0%':{transform:'scale(.5)'},'70%':{transform:'scale(1.15)'},'100%':{transform:'scale(1)'}}},animation:{up:'up .3s ease-out',pop:'pop .3s ease-out'}}}}
+</script>
+<style>
+:focus-visible{outline:3px solid #0b6fa4;outline-offset:2px;border-radius:6px}
+button,a,select,input{transition:all .15s ease}
+button:active:not(:disabled){transform:scale(.97)}
+.ic{width:1.25em;height:1.25em;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.sp{display:grid;place-items:center}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body class="bg-via-l text-via-g font-sans min-h-screen flex flex-col antialiased">
+<svg width="0" height="0" class="absolute"><defs>
+<symbol id="chev" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol><symbol id="l" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol><symbol id="r" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+<symbol id="check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol><symbol id="user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v1"/></symbol>
+<symbol id="seat" viewBox="0 0 24 24"><path d="M7 3v9a2 2 0 0 0 2 2h8M7 14l-2 7M17 14l2 7M9 21h8"/></symbol><symbol id="bag" viewBox="0 0 24 24"><rect x="5" y="7" width="14" height="14" rx="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"/></symbol>
+<symbol id="swap" viewBox="0 0 24 24"><path d="M7 4 3 8l4 4M3 8h14M17 20l4-4-4-4M21 16H7"/></symbol><symbol id="edit" viewBox="0 0 24 24"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></symbol>
+<symbol id="x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol><symbol id="plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+<symbol id="ticket" viewBox="0 0 24 24"><path d="M3 9a2 2 0 0 0 0 6v3h18v-3a2 2 0 0 1 0-6V6H3zM14 6v12"/></symbol><symbol id="fork" viewBox="0 0 24 24"><path d="M7 3v7a2 2 0 0 0 4 0V3M9 10v11M17 21V3c-2 1-3 4-3 8h3"/></symbol>
+<symbol id="bed" viewBox="0 0 24 24"><path d="M3 19V5M3 14h18v5M21 14v-2a3 3 0 0 0-3-3h-7v5"/></symbol><symbol id="arrow" viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></symbol>
+<symbol id="menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol><symbol id="train" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="14" rx="3"/><path d="M5 11h14M8 21l2-4M16 21l-2-4"/></symbol>
+<symbol id="info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></symbol><symbol id="drop" viewBox="0 0 24 24"><path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/></symbol>
+<symbol id="plug" viewBox="0 0 24 24"><path d="M9 2v6M15 2v6M6 8h12v3a6 6 0 0 1-12 0zM12 17v5M3 3l18 18"/></symbol><symbol id="ruler" viewBox="0 0 24 24"><path d="M3 8h18v8H3zM7 8v3M11 8v4M15 8v3"/></symbol>
+<symbol id="trash" viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/></symbol><symbol id="mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></symbol>
+<symbol id="phone" viewBox="0 0 24 24"><path d="M22 17v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3l2 5-2 1.5a12 12 0 0 0 6 6L15 13z"/></symbol><symbol id="pin" viewBox="0 0 24 24"><path d="M12 21s7-6 7-11a7 7 0 0 0-14 0c0 5 7 11 7 11z"/><circle cx="12" cy="10" r="2"/></symbol>
+<symbol id="note" viewBox="0 0 24 24"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z"/></symbol>
+</defs></svg>
+
+<div class="bg-via-d text-white text-xs hidden md:block"><div class="max-w-6xl mx-auto px-4 h-8 flex items-center justify-end gap-5">
+ <button data-act="notes" class="flex items-center gap-1.5 text-via-y font-semibold hover:underline"><svg class="ic"><use href="#note"/></svg>Design notes</button>
+ <span class="opacity-80">Loyalty program</span><span class="opacity-80">Help &amp; Contact</span><span class="opacity-80">Accessibility</span><button data-act="toast" data-m="Language switch (demo)" class="hover:underline">Français</button></div></div>
+<header class="bg-white border-b border-via-ln sticky top-0 z-30 shadow-sm">
+  <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+    <button data-act="go" data-v="fm" class="flex items-center gap-2.5" aria-label="Home"><span class="flex gap-0.5 -skew-x-12"><i class="w-3 h-6 bg-via-y"></i><i class="w-3 h-6 bg-via-y"></i><i class="w-3 h-6 bg-via-y"></i></span><span class="text-xs font-bold leading-none text-left">LOGO<br><span class="font-normal text-via-m">placeholder</span></span></button>
+    <div class="flex items-center gap-3 text-sm">
+      <button data-act="toast" data-m="Account menu (demo)" class="hidden md:flex items-center gap-2 hover:bg-via-l rounded-full pl-1 pr-3 py-1"><span class="sp w-8 h-8 rounded-full bg-via-g text-white"><svg class="ic w-4 h-4"><use href="#user"/></svg></span><span class="text-left leading-tight"><b>Marie Smith</b><br><span class="text-xs text-via-m">12,345 points</span></span></button>
+      <button data-act="notes" class="md:hidden sp w-10 h-10 rounded-full hover:bg-via-l text-via-b" aria-label="Design notes"><svg class="ic"><use href="#note"/></svg></button>
+      <button data-act="menu" class="md:hidden sp w-10 h-10 rounded-full hover:bg-via-l" aria-label="Menu"><svg class="ic"><use href="#menu"/></svg></button>
+    </div></div>
+  <nav id="mnav" class="hidden bg-white border-t border-via-ln px-4 py-2 text-sm animate-up md:hidden">
+    <button data-act="go" data-v="fm" class="block w-full text-left py-2.5">Select departure</button><button data-act="go" data-v="bk" class="block w-full text-left py-2.5">View booking</button><button data-act="go" data-v="pi" class="block w-full text-left py-2.5">Passenger information</button></nav>
+</header>
+
+<main id="app" class="flex-1 w-full max-w-6xl mx-auto px-4 pb-12"></main>
+
+<footer class="bg-via-g text-white text-sm">
+ <div class="max-w-6xl mx-auto px-4 pt-10 pb-6 grid sm:grid-cols-2 lg:grid-cols-4 gap-8" id="ft"></div>
+ <div class="border-t border-white/15"><div class="max-w-6xl mx-auto px-4 py-4 flex flex-col sm:flex-row gap-3 justify-between text-xs text-white/70"><span>© 2026 Rail Co. Inc. – portfolio concept, not an official site</span><span>Terms of Use | Cookie policy | Privacy Policy | Site Map</span></div></div>
+</footer>
+<div id="bar" class="hidden sticky bottom-0 z-20 bg-white border-t border-via-ln shadow-[0_-4px_16px_rgba(0,0,0,.08)] pb-[env(safe-area-inset-bottom)]">
+  <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between sm:justify-end gap-4 sm:gap-8">
+    <div><p class="text-xs text-via-m">Price before tax <span class="hidden sm:inline">· one-way, all travellers</span></p><p id="tot" class="text-2xl font-bold leading-none mt-0.5">$0</p></div>
+    <button id="cont" data-act="cont" class="flex items-center gap-2 px-8 h-12 rounded-full font-bold bg-via-y hover:bg-via-yd text-via-d disabled:bg-via-l disabled:text-via-m/60 disabled:cursor-not-allowed">Continue<svg class="ic"><use href="#arrow"/></svg></button></div></div>
+<aside id="notes" class="hidden fixed z-50 inset-x-3 bottom-3 sm:left-auto sm:right-4 sm:w-96 max-h-[70vh] overflow-auto bg-white rounded-2xl shadow-2xl border border-via-ln p-5 animate-up"></aside>
+<div id="toast" class="fixed left-1/2 -translate-x-1/2 top-20 z-[60] bg-via-d text-white text-sm px-5 py-3 rounded-full shadow-xl opacity-0 pointer-events-none transition-opacity flex items-center gap-2"></div>
+
+<script>
+const $=s=>document.querySelector(s), money=n=>'$'+n.toLocaleString();
+const ic=(n,c='')=>`<svg class="ic ${c}"><use href="#${n}"/></svg>`;
+const DAYS=[['Mon','Apr 17',128],['Tue','Apr 18',69],['Wed','Apr 19',62],['Thu','Apr 20',49],['Fri','Apr 21',49]];
+const TRAINS=[{n:55,f:'10:20',t:'15:45',m:620,a:945,o:0},{n:61,f:'07:20',t:'12:45',m:440,a:765,o:20},{n:67,f:'16:05',t:'21:30',m:965,a:1290,o:-10}];
+const LIST=['Carry-on baggage','Food cart service ($)','100% VIA Préférence points','Movies, TV and wifi'];
+const FARES=[['Escape Fare','Budget conscious','Exchange fees of 50% of fare','Non-refundable'],['Economy Fare','Our best value','Exchange fees of 25% of fare','Refundable with fee'],['Economy Plus Fare','Maximum flexibility','Free exchanges','Fully refundable']];
+const SLP=[['Berth',[200,300],'Ideal for one person who wants comfort (a bed) at a low cost.'],['Cabin for 1',[350,450],'A private cabin for one traveller with a sofa-bed and private washroom.'],['Cabin for 2',[400,520],'A private cabin for two with convertible seating and in-room washroom.'],['Cabin for 3',[450,600],'A spacious cabin for three, ideal for small families.'],['Prestige',[500,700],'Our premium sleeper: lounge, full bed and priority service.']];
+const AMEN=[['ruler','Mattress: approx. 5 ft. 10 in. x 3 ft. 7 in. (178 x 109 cm)'],['drop','Public washroom in same car, access to showers'],['seat','Daytime: couch-style seat facing the other berth'],['bed','Night-time: folds into a bed with heavy curtains for privacy'],['plug','No electrical outlet in this type of accommodation'],['info','Pillows, sheets and blankets from on-board personnel']];
+const NOTES={fm:['Start simple: one question per step. Pick a day, a train, then a class.','The price is the hero. Each class shows its lowest fare so people can compare before opening anything.','Fares are shown side by side on desktop so the differences are visible. On phones they fold into accordions to avoid endless scrolling.','The Continue bar stays visible and only wakes up once a fare is chosen, so users always know the next step and the total.'],
+bk:['Everything a traveller asks first (when, where, who) sits at the top.','Actions are big, icon-led tiles so common tasks (seat, baggage, change) are one tap away.','Less common info (baggage rules) is tucked in expandable rows to keep the page calm.'],
+pi:['Each passenger has a card. Empty fields say “Add”, filled ones say “Edit”, so the next action is always obvious.','Editing happens in place, with no page reload and no lost context.','Risky actions (delete) ask for confirmation.'],
+pe:['Agent view: all passengers in one list, collapsed by default, so a long booking stays manageable.','Read-only fields are greyed out so agents know what they cannot change.','One clear primary button at the end saves everything.']};
+const FT=[['Company','About VIA Rail','Conditions of the contract','Careers','Media room','The blog'],['Services & programs','Loyalty program','Boutique','Travel agents & Tour operators','Business partners'],['Customer support','Help & Contact','Developers','Web Accessibility'],['Connect','Facebook','Instagram','YouTube','Download the app']];
+$('#ft').innerHTML=FT.map(c=>`<div><h3 class="font-bold mb-3 text-via-y">${c[0]}</h3><ul class="space-y-2 text-white/85">${c.slice(1).map(x=>`<li><a href="#" class="hover:underline">${x}</a></li>`).join('')}</ul></div>`).join('')+`<p class="lg:col-span-4 flex flex-wrap items-center gap-x-4 gap-y-1 border-t border-white/15 pt-5">${ic('phone')}<b>1-888-VIA-RAIL</b><span class="text-white/70">TTY Deaf and hard of hearing:</span><b>1-800 268-9503</b></p>`;
+const PAXN=2;
+let s={v:'fm',day:2,sort:'dep',cls:'eco',tr:0,acc:0,fo:{},sel:null,ed:null,eo:{},
+ p:[{n:'Marie Williams Smith',t:'Adult',email:'',via:''},{n:'John Smith',t:'Adult',email:'johnsmith8765@gmail.com',via:'43243534534'},{n:'Bobbi Smith',t:'Youth',email:'',via:''}],
+ c:{first:'Marie',last:'Williams Smith',email:'mariesmith@gmail.com',type:'Office',phone:'',ext:''},bk:{open:null,receipt:false}};
+const chev=o=>`<span class="sp w-8 h-8 rounded-full border border-current/30 flex-none">${ic('chev',`transition-transform duration-200 ${o?'rotate-180':''}`)}</span>`;
+const card='bg-white rounded-2xl shadow-sm border border-via-ln';
+const btnP='bg-via-y hover:bg-via-yd text-via-d font-bold rounded-full px-6 h-10 text-sm';
+const btnO='border-2 border-via-g text-via-g hover:bg-via-g hover:text-white font-bold rounded-full px-5 h-10 text-sm';
+const h1=t=>`<h1 class="text-3xl sm:text-4xl font-bold mt-8">${t}</h1>`;
+
+function route(a,b,dur,n){return `<div class="flex items-center gap-3 sm:gap-5 w-full">${n?`<span class="text-xs font-bold bg-via-l rounded-full px-2.5 py-1">#${n}</span>`:''}<div class="text-center"><p class="text-xs text-via-m">Tor</p><p class="text-xl sm:text-2xl font-bold leading-tight">${a}</p></div>
+<div class="flex-1 text-center min-w-[70px]"><p class="text-[11px] text-via-m">${dur}</p><div class="flex items-center"><i class="w-2 h-2 rounded-full bg-via-g"></i><i class="flex-1 h-px bg-via-g/40"></i>${ic('train','w-4 h-4 mx-1 text-via-g')}<i class="flex-1 h-px bg-via-g/40"></i><i class="w-2 h-2 rounded-full bg-via-g"></i></div></div>
+<div class="text-center"><p class="text-xs text-via-m">Van</p><p class="text-xl sm:text-2xl font-bold leading-tight">${b}</p></div></div>`}
+function fareCard(key,price,name,tag,extra,badge){
+  const sel=s.sel&&s.sel.key===key, open=s.fo[key]??key.endsWith('0');
+  return `<div class="relative rounded-xl border-2 ${sel?'border-via-g bg-via-y/10 shadow-lg':'border-via-ln bg-white hover:border-via-g/40 hover:shadow-md'}">
+  ${badge?`<span class="absolute -top-3 left-4 bg-via-y text-via-d text-xs font-bold px-3 py-0.5 rounded-full">${badge}</span>`:''}
+  <button data-act="fo" data-k="${key}" class="w-full flex justify-between items-center p-4 text-left lg:cursor-default lg:pointer-events-none"><span><b class="block">${name}</b><span class="text-sm text-via-m">${tag}</span></span><span class="lg:hidden">${chev(open)}</span></button>
+  <div class="${open?'block':'hidden'} lg:block px-4 pb-4 animate-up"><ul class="space-y-2 text-sm">${[...LIST,...extra].map(x=>`<li class="flex gap-2 items-start"><span class="sp w-5 h-5 rounded-full bg-via-g/10 text-via-g mt-px">${ic('check','w-3 h-3')}</span>${x}</li>`).join('')}</ul>
+  <button data-act="toast" data-m="Onboard meals menu (demo)" class="flex items-center gap-1.5 text-via-b text-sm font-semibold mt-3 hover:underline">${ic('fork')}See available onboard meals</button>
+  <div class="flex items-end justify-between mt-4 pt-4 border-t border-via-ln"><div><span class="text-3xl font-bold">${money(price)}</span>${key[0]=='s'?'<span class="text-xs text-via-m"> /person*</span>':''}</div>
+  ${sel?`<span class="flex items-center gap-2 font-bold text-sm"><span class="animate-pop sp w-7 h-7 rounded-full bg-via-g text-via-y">${ic('check','w-4 h-4')}</span>Selected</span>`:`<button data-act="sel" data-k="${key}" data-p="${price}" class="${btnP}">Select</button>`}</div></div></div>`;
+}
+const ecoPanel=t=>`<div class="grid lg:grid-cols-3 gap-5 pt-3">${FARES.map((f,i)=>fareCard(`e${t.n}${i}`,[49,89,109][i]+t.o,f[0],f[1],f.slice(2),i==1?'Best value':'')).join('')}</div>`;
+function slpPanel(t){
+  const tabs=`<div class="hidden lg:flex gap-2 mb-5 flex-wrap">${SLP.map((a,i)=>`<button data-act="acc" data-i="${i}" class="px-5 py-2.5 rounded-full text-sm text-left ${s.acc==i?'bg-via-g text-white shadow':'bg-white border border-via-ln hover:border-via-g'}"><b>${a[0]}</b> <span class="${s.acc==i?'text-white/70':'text-via-m'}">from ${money(a[1][0])}</span></button>`).join('')}</div>`;
+  return tabs+SLP.map((a,i)=>`<div class="${s.acc==i?'':'lg:hidden'} mt-2 lg:mt-0"><button data-act="acc" data-i="${i}" class="lg:hidden w-full flex justify-between items-center p-4 bg-white rounded-xl border border-via-ln text-left"><span><b class="block">${a[0]}</b><span class="text-sm text-via-m">Starting at ${money(a[1][0])}</span></span>${chev(s.acc==i)}</button>
+  ${s.acc==i?`<div class="animate-up pt-3"><p class="text-sm mb-4">${a[2]}</p><div class="grid lg:grid-cols-2 gap-5">${a[1].map((p,j)=>fareCard(`s${t.n}${i}${j}`,p,a[0]+(j?' Plus Low':' Regular'),j?'More flexible':'Budget conscious',['Exchange fees of 50% of fare','Non-refundable'],j?'':'Lowest price')).join('')}</div>
+  <p class="text-xs text-via-m my-3">* Prices are per passenger, before tax.</p>
+  <div class="${card} p-4 sm:p-6 grid md:grid-cols-[220px_1fr] gap-6"><div class="grid grid-cols-2 md:grid-cols-1 gap-3"><div class="aspect-[4/3] rounded-xl bg-gradient-to-br from-via-ln to-via-l grid place-items-center text-xs text-via-m">Photo placeholder</div><div class="aspect-[4/3] rounded-xl bg-via-l border border-dashed border-via-m/40 grid place-items-center text-xs text-via-m">Diagram placeholder</div></div>
+  <ul class="grid sm:grid-cols-2 gap-x-6 gap-y-4 text-sm content-start">${AMEN.map(x=>`<li class="flex gap-3"><span class="sp w-9 h-9 rounded-full bg-via-y/25 text-via-g">${ic(x[0])}</span><span class="pt-1">${x[1]}</span></li>`).join('')}</ul></div></div>`:''}</div>`).join('');
+}
+function trainCard(t,i){
+  const on=s.tr==i&&s.cls, low=49+t.o;
+  const hdr=(c,l,p,tone)=>`<button data-act="cls" data-i="${i}" data-c="${c}" class="${tone} flex items-center justify-between gap-3 p-4 lg:rounded-none text-left rounded-xl ${on&&s.cls==c?'ring-2 ring-inset ring-via-y':''} hover:brightness-110"><span><b class="block">${l}</b><span class="text-xs opacity-80">Starting at</span> <b class="text-xl">${money(p)}</b></span>${chev(on&&s.cls==c)}</button>`;
+  return `<article class="${card} mb-5 overflow-hidden animate-up"><div class="lg:grid lg:grid-cols-[1.3fr_1fr_1fr]"><div class="p-4 sm:p-5 flex items-center">${route(t.f,t.t,'5h 25m',t.n)}</div>
+  <div class="grid gap-2 p-3 pt-0 lg:contents">${hdr('eco','Economy Class',low,'bg-via-g/90 text-white')}${hdr('slp','Sleeper Class',500,'bg-via-d text-white')}</div></div>
+  ${on?`<div class="bg-via-l border-t border-via-ln p-4 sm:p-6 animate-up">${s.cls=='eco'?ecoPanel(t):slpPanel(t)}</div>`:''}</article>`;
+}
+function fm(){
+  const d=DAYS[s.day], ts=[...TRAINS].sort((a,b)=>({dep:a.m-b.m,fare:a.o-b.o,dur:(a.a-a.m)-(b.a-b.m),arr:a.a-b.a})[s.sort]);
+  const so=[['dep','Departure time'],['fare','Lowest fare'],['dur','Duration'],['arr','Arrival time']];
+  return `<div class="-mx-4 px-4 bg-via-g text-white"><div class="max-w-6xl mx-auto py-3 flex items-center justify-between gap-3 text-sm"><div class="flex flex-wrap items-center gap-x-4 gap-y-1"><b class="flex items-center gap-2 text-base">Toronto ${ic('arrow','w-4 h-4 text-via-y')} Vancouver</b><span class="text-white/80">${d[0]}, ${d[1]} · ${ic('user','w-4 h-4 inline -mt-0.5')} 3 travellers</span></div><button data-act="toast" data-m="Modify search (demo)" class="flex items-center gap-1 border border-white/50 hover:bg-white hover:text-via-g rounded-full pl-4 pr-2 py-1 font-semibold">Modify ${ic('chev')}</button></div></div>
+  <div class="flex items-center justify-center gap-2 sm:gap-4 mt-6"><button data-act="day" data-i="${Math.max(0,s.day-1)}" class="sp w-10 h-10 rounded-full bg-white border border-via-ln hover:bg-via-g hover:text-white shrink-0" aria-label="Previous day">${ic('l')}</button>
+  <div class="flex gap-2">${DAYS.map((x,i)=>`<button data-act="day" data-i="${i}" class="rounded-xl px-3 sm:px-5 py-2 text-center border ${i==s.day?'bg-via-y border-via-y shadow-md font-bold':'bg-white border-via-ln hover:border-via-g'} ${Math.abs(i-s.day)>1?'hidden sm:block':''}"><span class="block text-xs">${x[0]}, ${x[1]}</span><span class="text-lg">${money(x[2])}</span></button>`).join('')}</div>
+  <button data-act="day" data-i="${Math.min(4,s.day+1)}" class="sp w-10 h-10 rounded-full bg-white border border-via-ln hover:bg-via-g hover:text-white shrink-0" aria-label="Next day">${ic('r')}</button></div>
+  <div class="text-center">${h1('Select departure')}<p class="text-via-m mt-1">Results for ${d[1]}, 2021 · Pick a train, then a class, then a fare.</p></div>
+  <div class="my-6 flex items-center justify-center gap-3 text-sm"><span class="text-via-m">Sort by</span>
+  <select data-act="sort" class="lg:hidden border border-via-ln rounded-full bg-white px-4 py-2 font-semibold min-w-[180px]">${so.map(o=>`<option value="${o[0]}" ${s.sort==o[0]?'selected':''}>${o[1]}</option>`).join('')}</select>
+  <div class="hidden lg:flex bg-white rounded-full border border-via-ln p-1">${so.map(o=>`<button data-act="sort" data-v="${o[0]}" class="px-4 py-1.5 rounded-full ${s.sort==o[0]?'bg-via-g text-white font-bold':'hover:bg-via-l'}">${o[1]}</button>`).join('')}</div></div>
+  ${ts.map(t=>trainCard(t,TRAINS.indexOf(t))).join('')}`;
+}
+const row=(l,v)=>`<div class="flex gap-3"><dt class="w-28 sm:w-36 text-via-m shrink-0">${l}</dt><dd class="font-semibold">${v}</dd></div>`;
+function leg(t,d,fare,a,n){return `<div class="${card} p-5"><div class="flex justify-between items-center mb-3"><b>${t} · ${d}</b><button data-act="toast" data-m="Train status (demo)" class="flex items-center gap-1.5 text-xs font-bold bg-green-100 text-green-800 rounded-full px-3 py-1"><i class="w-2 h-2 rounded-full bg-green-600"></i>On time</button></div>
+  <div class="rounded-xl bg-via-l p-4"><p class="text-xs font-bold text-via-m mb-2">${fare}</p>${route(a[0],a[1],'5h 25m',n).replace('Tor','Mtl').replace('Van','Tor')}</div>
+  ${['John Smith','Marie Smith'].map(x=>`<div class="mt-4 text-sm flex gap-3"><span class="sp w-9 h-9 rounded-full bg-via-g/10">${ic('user')}</span><div><b>${x} (Adult)</b><p class="text-via-m">Seat 3a · Add-on 1 · No special services</p></div></div>`).join('')}</div>`}
+function bk(){
+  const tiles=[['seat','Add/view seat'],['bag','Add/remove baggage'],['swap','Change travel option'],['edit','Modify booking'],['x','Cancel booking'],['plus','Add passenger']];
+  return `${h1('View your booking')}<p class="text-via-m mt-1">Everything about your trip in one place.</p>
+  <div class="${card} p-5 mt-5 grid md:grid-cols-[1fr_1fr_auto] gap-5 items-start"><div><p class="text-xs text-via-m">Booking number</p><p class="text-2xl font-bold">3232323</p></div>
+  <dl class="text-sm space-y-1.5">${row('Booking date','Jan. 20 2021')}${row('Customer','Marie Smith')}${row('Last update','Jan 24 2021')}</dl>
+  <dl class="text-sm space-y-1.5">${row('Agency','Great Company')}${row('Main contact','will.werkit<br><span class="font-normal">willwerkit@greatcompany.com<br>514-777-8888 ext. 8888</span>')}</dl></div>
+  <button data-act="toast" data-m="Boarding pass (demo)" class="${btnO} mt-4 inline-flex items-center gap-2">${ic('ticket')}See boarding pass</button>
+  <h2 class="text-xl font-bold mt-8 mb-4">Montréal–Toronto · Round trip · 2 passengers</h2>
+  <div class="grid md:grid-cols-2 gap-5">${leg('Departure','Tue. Apr. 19','Escape fare',['14:20','19:45'],60)}${leg('Return','Fri. Apr. 22','Economy fare',['7:20','12:35'],88)}</div>
+  <h2 class="text-xl font-bold mt-8 mb-4">Manage your booking</h2><div class="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">${tiles.map((x,i)=>`<button data-act="toast" data-m="${x[1]} (demo flow)" class="${card} p-4 sm:p-5 text-left flex sm:flex-col items-center sm:items-start gap-3 font-semibold hover:shadow-lg hover:-translate-y-0.5 hover:border-via-y group ${i==5?'sm:hidden lg:flex':''}"><span class="sp w-11 h-11 rounded-full bg-via-y/30 group-hover:bg-via-y">${ic(x[0],'w-5 h-5')}</span>${x[1]}</button>`).join('')}</div>
+  <div class="${card} mt-6 divide-y divide-via-ln overflow-hidden"><button data-act="bkopen" class="w-full flex justify-between items-center p-4 hover:bg-via-l font-semibold">Your baggage &amp; fare conditions ${chev(s.bk.open)}</button>${s.bk.open?'<p class="p-4 text-sm bg-via-l animate-up">Each passenger may carry two pieces of baggage plus one personal item. Escape fares are non-refundable with a 50% exchange fee.</p>':''}
+  <button data-act="go" data-v="pi" class="w-full flex justify-between items-center p-4 hover:bg-via-l font-semibold">Passenger information <span class="sp w-8 h-8">${ic('r')}</span></button></div>
+  <div class="relative inline-block mt-6"><button data-act="rc" class="${btnO} flex items-center gap-2">${ic('mail')}Resend receipt ${ic('chev')}</button>${s.bk.receipt?`<div class="absolute bottom-12 w-56 ${card} overflow-hidden animate-up z-10">${['Marie Smith','John Smith'].map(x=>`<button data-act="toast" data-m="Receipt sent to ${x}" class="block w-full text-left px-4 py-3 text-sm hover:bg-via-l">${x}</button>`).join('')}</div>`:''}</div>
+  <div class="grid grid-cols-2 gap-4 sm:gap-5 mt-8">${['Montréal Station','Toronto Union Station'].map(x=>`<button data-act="toast" data-m="${x} (demo)" class="${card} text-left overflow-hidden group hover:shadow-lg"><span class="block h-28 sm:h-44 bg-gradient-to-br from-via-ln to-via-l overflow-hidden"><span class="sp h-full text-xs text-via-m group-hover:scale-110 transition duration-500">Image placeholder</span></span><span class="flex justify-between items-center p-4 font-semibold"><span class="flex items-center gap-2">${ic('pin','text-via-b')}${x}</span>${ic('r')}</span></button>`).join('')}</div>`;
+}
+const lbl='text-xs text-via-m';
+function fld(id,k,l,v,ico){
+  if(s.ed==id+k) return `<form data-act="save" data-id="${id}" data-k="${k}" class="py-3 animate-up"><label class="${lbl}">${l}</label><div class="flex gap-2 mt-1"><input name="v" value="${v||''}" autofocus class="flex-1 min-w-0 border-2 border-via-ln rounded-xl px-3 h-11 focus:border-via-b outline-none"><button class="${btnP} h-11">Save</button><button type="button" data-act="ed" data-e="" class="px-2 text-sm font-semibold underline">Cancel</button></div></form>`;
+  return `<div class="flex justify-between items-center gap-3 py-3 border-b border-via-ln last:border-0"><div class="flex items-center gap-3 min-w-0"><span class="sp w-9 h-9 rounded-full bg-via-l text-via-m shrink-0">${ic(ico)}</span><div class="min-w-0"><p class="${lbl}">${l}</p><p class="font-semibold truncate ${v?'':'text-via-m/60 font-normal'}">${v||'Not provided'}</p></div></div><button data-act="ed" data-e="${id+k}" class="flex items-center gap-1.5 text-sm font-bold text-via-b hover:underline shrink-0">${ic(v?'edit':'plus','w-4 h-4')}${v?'Edit':'Add'}</button></div>`;
+}
+const sel='border-2 border-via-ln rounded-xl px-3 h-11 bg-white';
+function pi(){
+  const c=s.c, ph=c.phone?`${c.type} ${c.phone}${c.ext?' ext. '+c.ext:''}`:'';
+  return `<button data-act="go" data-v="bk" class="flex items-center gap-1 text-sm font-semibold mt-6 hover:underline">${ic('l')}Back to view booking</button>${h1('Passenger information')}<p class="mt-1 text-via-m">Booking number <b class="text-via-g">3232323</b> · Questions? Call <b class="text-via-g">1-800-VIA RAIL</b></p>
+  <button data-act="go" data-v="pe" class="${btnO} mt-4 inline-flex items-center gap-2">${ic('edit')}Edit all details (agent view)</button>
+  <div class="max-w-2xl space-y-5 mt-6">${s.p.map((p,i)=>`<section class="${card} p-5 animate-up"><h2 class="font-bold text-lg flex items-center gap-2">${p.n}<span class="text-xs font-semibold bg-via-l rounded-full px-2.5 py-0.5">${p.t}</span></h2>${fld(i,'email','Email',p.email,'mail')}${fld(i,'via','VIA Préférence #',p.via,'ticket')}<button data-act="del" data-i="${i}" class="flex items-center gap-1.5 ml-auto mt-3 text-sm font-semibold text-red-700 hover:underline">${ic('trash','w-4 h-4')}Delete passenger from booking</button></section>`).join('')}
+  <section class="${card} p-5"><h2 class="font-bold text-lg">Customer contact</h2><p class="text-sm text-via-m mt-1">The person we contact about this booking. An email is required.</p>
+  <select data-act="cc" class="${sel} mt-4"><option>Change customer contact</option>${s.p.map(p=>`<option>${p.n}</option>`).join('')}</select>
+  <div class="grid sm:grid-cols-2 gap-3 mt-4"><div class="bg-via-l rounded-xl p-3"><p class="${lbl}">First name</p><b>${c.first}</b></div><div class="bg-via-l rounded-xl p-3"><p class="${lbl}">Last name</p><b>${c.last}</b></div></div>
+  ${fld('c','email','Email*',c.email,'mail')}
+  ${s.ed=='cphone'?`<form data-act="savephone" class="py-3 animate-up"><p class="${lbl} mb-1">Phone number</p><div class="flex flex-wrap gap-2 items-center"><select name="type" class="${sel}">${['Office','Mobile','Home'].map(x=>`<option ${c.type==x?'selected':''}>${x}</option>`).join('')}</select><input name="phone" placeholder="(514) 777-8888" value="${c.phone}" class="${sel} w-40"><input name="ext" placeholder="Ext." value="${c.ext}" class="${sel} w-20"><button class="${btnP} h-11">Save</button><button type="button" data-act="ed" data-e="" class="text-sm font-semibold underline">Cancel</button></div></form>`:`<div class="flex justify-between items-center py-3"><div class="flex items-center gap-3"><span class="sp w-9 h-9 rounded-full bg-via-l text-via-m">${ic('phone')}</span><div><p class="${lbl}">Phone number</p><p class="font-semibold ${ph?'':'text-via-m/60 font-normal'}">${ph||'Not provided'}</p></div></div><button data-act="ed" data-e="cphone" class="flex items-center gap-1.5 text-sm font-bold text-via-b hover:underline">${ic(ph?'edit':'plus','w-4 h-4')}${ph?'Edit':'Add'}</button></div>`}</section></div>
+  ${mainContact()}`;
+}
+const mainContact=()=>`<section class="max-w-2xl mt-8 ${card} p-5"><h2 class="font-bold text-lg">Main contact</h2><p class="text-sm text-via-m mt-1">Booking confirmation and travel documents are sent to the agent, who uses this information to reach your customer.</p><dl class="grid sm:grid-cols-2 gap-4 text-sm mt-4"><div><dt class="${lbl}">Agency / Tour operator</dt><dd class="font-semibold">Great Company</dd><dt class="${lbl} mt-3">Agent</dt><dd class="font-semibold">Will Werkit</dd><dt class="${lbl} mt-3">Email</dt><dd class="font-semibold break-all">willwerkit@greatcompany.com</dd></div><div><dt class="${lbl}">Phone number</dt><dd class="font-semibold">Office (514) 777-8888 ext. 1234</dd><dt class="${lbl} mt-3">Address</dt><dd class="font-semibold">555 de Gaspé, #123<br>Montréal, Québec, Canada<br>H3D 4G4</dd></div></dl></section>`;
+const inp=(b,l,v,dis)=>`<label class="block text-sm font-semibold mt-4">${l}<input data-bind="${b}" value="${v||''}" ${dis?'readonly':''} class="block mt-1 w-full max-w-sm border-2 rounded-xl px-3 h-11 font-normal ${dis?'bg-via-l border-via-l text-via-m':'bg-white border-via-ln focus:border-via-b outline-none'}"></label>`;
+function pe(){
+  const card2=(k,t,body)=>`<section class="${card} mb-4 animate-up"><button data-act="eo" data-k="${k}" class="w-full flex justify-between items-center p-4 sm:p-5 text-left"><b class="text-lg">${t}</b><span class="flex items-center gap-1 border-2 border-via-g rounded-full pl-4 pr-1 py-1 text-sm font-bold">Edit ${chev(s.eo[k])}</span></button>${s.eo[k]?`<div class="px-5 pb-6 animate-up">${body}</div>`:''}</section>`, c=s.c;
+  return `<button data-act="go" data-v="pi" class="flex items-center gap-1 text-sm font-semibold mt-6 hover:underline">${ic('l')}Back to passenger information</button>${h1('Passenger information')}<p class="mt-1 mb-6 text-via-m">Booking number <b class="text-via-g">3232323</b> · * Mandatory field</p><div class="max-w-2xl">
+  ${s.p.map((p,i)=>card2('p'+i,p.n+' · '+p.t,`${inp(i+'.n','First name*',p.n.split(' ')[0])}${inp(i+'.l','Last name*',p.n.split(' ').slice(1).join(' '))}${inp(i+'.c','Country*','Canada')}${inp(i+'.email','Email',p.email)}${inp(i+'.dob','Date of birth','02/03/1980')}${inp(i+'.via','VIA Préférence #',p.via)}`)).join('')}
+  ${card2('c','Customer contact · '+c.first+' '+c.last,`${inp('c.first','First name*',c.first,1)}${inp('c.last','Last name*',c.last,1)}${inp('c.email','Email*',c.email)}${inp('c.phone','Phone number',c.phone)}`)}
+  ${mainContact()}<div class="mt-8"><button data-act="confirm" class="${btnP} h-12 px-12 w-full sm:w-auto">Confirm changes</button></div></div>`;
+}
+const V={fm,bk,pi,pe};
+function render(){
+  $('#app').innerHTML=`<div class="${s.v=='fm'?'':'animate-up'}">${V[s.v]()}</div>`;
+  $('#bar').classList.toggle('hidden',s.v!='fm');
+  if(s.v=='fm'){const p=s.sel?s.sel.price*PAXN:0;$('#tot').textContent=money(p)+(p?'.00':'');$('#cont').disabled=!s.sel;}
+  $('#notes').innerHTML=`<div class="flex justify-between items-center mb-3"><b class="flex items-center gap-2 text-via-b">${ic('note')}Design notes</b><button data-act="notes" class="sp w-8 h-8 rounded-full hover:bg-via-l" aria-label="Close">${ic('x')}</button></div><ul class="space-y-3 text-sm">${NOTES[s.v].map(n=>`<li class="flex gap-2"><span class="sp w-5 h-5 rounded-full bg-via-y mt-0.5">${ic('check','w-3 h-3')}</span>${n}</li>`).join('')}</ul>`;
+}
+function toast(m){const t=$('#toast');t.innerHTML=ic('check','text-via-y')+m;t.classList.remove('opacity-0');clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.add('opacity-0'),2200)}
+function go(v){s.v=v;s.ed=null;$('#mnav').classList.add('hidden');scrollTo({top:0,behavior:'smooth'});render()}
+const A={
+ go:e=>go(e.dataset.v),toast:e=>toast(e.dataset.m),menu:()=>$('#mnav').classList.toggle('hidden'),notes:()=>$('#notes').classList.toggle('hidden'),
+ day:e=>{s.day=+e.dataset.i;s.sel=null;render()},sort:e=>{s.sort=e.value||e.dataset.v;render()},
+ cls:e=>{const i=+e.dataset.i,c=e.dataset.c;if(s.tr==i&&s.cls==c)s.cls=null;else{s.tr=i;s.cls=c;s.acc=0;s.fo={};s.sel=null}render()},
+ acc:e=>{s.acc=s.acc==+e.dataset.i&&innerWidth<1024?-1:+e.dataset.i;render()},fo:e=>{s.fo[e.dataset.k]=!(s.fo[e.dataset.k]??e.dataset.k.endsWith('0'));render()},
+ sel:e=>{s.sel={key:e.dataset.k,price:+e.dataset.p};render()},
+ cont:()=>{if(!s.sel)return;toast('Fare added. Loading your booking…');setTimeout(()=>go('bk'),800)},
+ bkopen:()=>{s.bk.open=!s.bk.open;render()},rc:()=>{s.bk.receipt=!s.bk.receipt;render()},
+ ed:e=>{s.ed=e.dataset.e||null;render()},eo:e=>{s.eo[e.dataset.k]=!s.eo[e.dataset.k];render()},
+ del:e=>{const p=s.p[+e.dataset.i];if(confirm('Delete '+p.n+' from this booking?')){s.p.splice(+e.dataset.i,1);toast(p.n+' removed');render()}},
+ cc:e=>{const p=s.p.find(x=>x.n==e.value);if(p){const[f,...l]=p.n.split(' ');Object.assign(s.c,{first:f,last:l.join(' '),email:p.email||s.c.email});toast('Customer contact updated');render()}},
+ confirm:()=>{toast('Changes saved');setTimeout(()=>go('pi'),700)}};
+document.addEventListener('click',e=>{const t=e.target.closest('[data-act]');if(!t||/SELECT|FORM/.test(t.tagName))return;A[t.dataset.act]?.(t)});
+document.addEventListener('change',e=>{const t=e.target;if(t.tagName=='SELECT'&&A[t.dataset.act])A[t.dataset.act](t)});
+document.addEventListener('submit',e=>{e.preventDefault();const f=e.target,d=f.dataset,v=Object.fromEntries(new FormData(f));
+ if(d.act=='save'){const o=d.id=='c'?s.c:s.p[+d.id];if(d.k=='email'&&!/^\S+@\S+\.\S+$/.test(v.v)){toast('Enter a valid email address');return}o[d.k]=v.v;toast('Saved')}
+ if(d.act=='savephone'){Object.assign(s.c,v);toast('Phone number saved')}
+ s.ed=null;render()});
+document.addEventListener('input',e=>{const b=e.target.dataset.bind;if(!b)return;const[i,k]=b.split('.');const o=i=='c'?s.c:s.p[+i];if(['email','via','phone'].includes(k))o[k]=e.target.value});
+render();
+</script>
+</body>
+</html>
